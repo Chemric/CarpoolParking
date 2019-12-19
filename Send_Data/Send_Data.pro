@@ -23,6 +23,8 @@ SOURCES += \
     activeaccounts.cpp \
     nummerplaten.cpp
 
+LIBS += -L/usr/local/include -lwiringPi
+
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin
 else: unix:!android: target.path = /opt/$${TARGET}/bin

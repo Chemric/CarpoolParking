@@ -13,14 +13,21 @@
 #include <QProcess>
 #include <QString>
 #include <QStringList>
+
+#include <wiringPi.h>
+
 #include "event.h"
 #include "activeaccounts.h"
 #include "nummerplaten.h"
+
 
 /*
  * Functie om connectie met de database te maken en de nodige informatie te sturen
 */
 void makeConnection(){
+
+    wiringPiSetup();
+    pinMode (0, INPUT);
 
     Event* event =new Event();
 
@@ -94,14 +101,30 @@ void makeConnection(){
 
         db.close();
         qDebug()<<"closed";
+
+        while(digitalRead(0) == 1){
+            qDebug()<<"rijd maar verder \n";
+        }
+    }
+    while(digitalRead(0) == 1){
+        qDebug()<<"onvoldoende personen rijd terug";
     }
 }
 
 int main(int argc, char *argv[])
 {
     QCoreApplication a(argc, argv);
-    makeConnection();
-    
+
+    wiringPiSetup();
+    pinMode (0, INPUT);
+
+    int i;
+    while(1){
+        qDebug()<< digitalRead(0);
+        if (digitalRead(0) == 1){
+            makeConnection();
+        }
+    }
     return a.exec();
 
 }
