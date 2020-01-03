@@ -28,6 +28,8 @@ void makeConnection(){
 
     wiringPiSetup();
     pinMode (0, INPUT);
+    pinMode (2, OUTPUT);
+    pinMode (3, OUTPUT);
 
     Event* event =new Event();
 
@@ -104,10 +106,14 @@ void makeConnection(){
 
         while(digitalRead(0) == 1){
             qDebug()<<"rijd maar verder \n";
+            digitalWrite(2,1);
+            digitalWrite(3,0);
         }
     }
     while(digitalRead(0) == 1){
         qDebug()<<"onvoldoende personen rijd terug";
+        digitalWrite(2,0);
+        digitalWrite(3,1);
     }
 }
 
@@ -117,12 +123,16 @@ int main(int argc, char *argv[])
 
     wiringPiSetup();
     pinMode (0, INPUT);
+    pinMode (2, OUTPUT);
+    pinMode (3, OUTPUT);
 
     int i;
     while(1){
         qDebug()<< digitalRead(0);
         if (digitalRead(0) == 1){
             makeConnection();
+            digitalWrite(2,0);
+            digitalWrite(3,0);
         }
     }
     return a.exec();
