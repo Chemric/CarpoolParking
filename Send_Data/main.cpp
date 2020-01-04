@@ -1,7 +1,7 @@
 /*
  *Programma voor het versturen van de data naar de MYSQL server
  * @author: Christiaan Prévot
- * @date: 23/11/2019
+ * @date: 4/01/2020
 */
 #include <cstdio>
 #include <QCoreApplication>
@@ -117,24 +117,32 @@ void makeConnection(){
     }
 }
 
-int main(int argc, char *argv[])
-{
-    QCoreApplication a(argc, argv);
+/*
+ * Functie om de io pin te lezen die controleerd of er een auto voor de slachtboom staat
+*/
+void readIo (){
 
     wiringPiSetup();
     pinMode (0, INPUT);
     pinMode (2, OUTPUT);
     pinMode (3, OUTPUT);
 
-    int i;
     while(1){
         qDebug()<< digitalRead(0);
+
         if (digitalRead(0) == 1){
             makeConnection();
             digitalWrite(2,0);
             digitalWrite(3,0);
         }
     }
+}
+
+int main(int argc, char *argv[])
+{
+    QCoreApplication a(argc, argv);
+    readIo();
+
     return a.exec();
 
 }
