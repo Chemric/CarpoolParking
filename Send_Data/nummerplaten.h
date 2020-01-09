@@ -9,10 +9,11 @@
 class NummerPlaten
 {
 public:
-    NummerPlaten(int id, float zekerheids);
+    NummerPlaten(int id);
 
     QByteArray updateFoto();
     QByteArray leesNummerplaat();
+    float leesZekerheid();
 
 
     //getters

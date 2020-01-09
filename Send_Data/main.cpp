@@ -68,7 +68,7 @@ void makeConnection(){
         queryGetEventID.first();
         event->setId( queryGetEventID.value(0).toInt() );
         qDebug()<<event->getId();
-        nummerplaten = new NummerPlaten(event->getId(),95.8);
+        nummerplaten = new NummerPlaten(event->getId());
         qDebug()<<"get eventID";
 
         QSqlQuery queryFoto;
@@ -85,7 +85,6 @@ void makeConnection(){
         queryGetFotoID.exec("SELECT MAX(ID) FROM Foto");
         queryGetFotoID.first();
         fotoID = queryGetFotoID.value(0).toInt();
-        qDebug()<<event->getId();
         qDebug()<<"get fotoID";
 
 
@@ -104,14 +103,19 @@ void makeConnection(){
         db.close();
         qDebug()<<"closed";
 
+        qDebug()<<"rijd maar verder \n";
         while(digitalRead(0) == 1){
-            qDebug()<<"rijd maar verder \n";
+
             digitalWrite(2,1);
             digitalWrite(3,0);
         }
     }
-    while(digitalRead(0) == 1){
+
+    else{
         qDebug()<<"onvoldoende personen rijd terug";
+    }
+
+    while(digitalRead(0) == 1){   
         digitalWrite(2,0);
         digitalWrite(3,1);
     }
@@ -128,7 +132,7 @@ void readIo (){
     pinMode (3, OUTPUT);
 
     while(1){
-        qDebug()<< digitalRead(0);
+        //qDebug()<< digitalRead(0);
 
         if (digitalRead(0) == 1){
             makeConnection();

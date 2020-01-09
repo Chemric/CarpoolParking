@@ -43,9 +43,10 @@ void Event::RunBashFile()
     int exitCode = proces.execute(program , args);
 
     proces.close();
-    qDebug()<<proces.isOpen();
+    //qDebug()<<proces.isOpen();
     updateAantalPersonen();
 }
+
 /*
  * Het aantal personen wordt uit een txt file gelezen.
 */
@@ -59,8 +60,8 @@ void Event::updateAantalPersonen()
     file.open(QIODevice::ReadOnly);
     QByteArray readValue = file.readAll();
     readValue=readValue.left(1);
-    qDebug()<< "testje ";
-    qDebug()<< readValue ;
+    qDebug()<< "aantal presonen";
+    //qDebug()<< readValue ;
     setAantalPersonen(readValue.toInt());
     qDebug()<< readValue.toInt() ;
 }
@@ -73,7 +74,7 @@ void Event::checkvoldoendePers()
     int i=0;
 
     for(i=0;i<=2; i++){
-        if (getAantalPersonen() >= 2)
+        if (getAantalPersonen() >= 0)
         {
             genoegPers=true;
             return;

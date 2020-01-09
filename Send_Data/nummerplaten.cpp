@@ -1,12 +1,12 @@
 #include "nummerplaten.h"
 
-NummerPlaten::NummerPlaten(int id, float zekerheids)
+NummerPlaten::NummerPlaten(int id)
 {
 
     EventID = id;
     foto = updateFoto();
     Nummer = leesNummerplaat();
-    zekerheid = zekerheids;
+    zekerheid = leesZekerheid();
 
 }
 
@@ -26,6 +26,24 @@ QByteArray NummerPlaten::updateFoto()
 
     file.open(QIODevice::ReadOnly);
     return file.readAll();
+
+}
+
+/*
+ * functie die de gegeven zekerheid uitleest
+*/
+float NummerPlaten::leesZekerheid()
+{
+    QFile file("/home/student/Desktop/Code_github/TextDetection/zekerheid.txt");
+
+    if(!file.exists()){
+        qDebug()<<"error no file found";
+    }
+    file.open(QIODevice::ReadOnly);
+    QByteArray readValue = file.readAll();
+    qDebug()<< readValue ;
+    file.close();
+    return readValue.toFloat();
 
 }
 

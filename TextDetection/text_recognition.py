@@ -1,8 +1,10 @@
 from imutils.object_detection import non_max_suppression
 import numpy as np
 import pytesseract
+import imutils
 import argparse
 import cv2
+import re
 import time
 import picamera
 
@@ -25,7 +27,8 @@ with picamera.PiCamera() as camera:
     camera.capture('/home/student/Desktop/Code_github/TextDetection/images/filename2.jpg')
 
 originalImage = cv2.imread('/home/student/Desktop/Code_github/TextDetection/images/filename2.jpg')
-grayImage = cv2.cvtColor(originalImage, cv2.COLOR_BGR2GRAY)
+rotatedImage = imutils.rotate(originalImage, 6)
+grayImage = cv2.cvtColor(rotatedImage, cv2.COLOR_BGR2GRAY)
 cv2.imwrite("/home/student/Desktop/Code_github/TextDetection/images/filename3.jpg", grayImage)
 
 def decode_predictions(scores, geometry):
@@ -83,7 +86,7 @@ ap.add_argument("-east", "--east", type=str, default="/home/student/Desktop/Code
     help="path to input EAST text detector")
 ap.add_argument("-c", "--min-confidence", type=float, default=0.5,
     help="minimum probability required to inspect a region")
-ap.add_argument("-w", "--width", type=int, default=320,
+ap.add_argument("-w", "--width", type=int, default=288,
     help="nearest multiple of 32 for resized width")
 ap.add_argument("-e", "--height", type=int, default=320,
     help="nearest multiple of 32 for resized height")
@@ -157,7 +160,7 @@ for (startX, startY, endX, endY) in boxes:
 
 results = sorted(results, key=lambda r:r[0][1])
 
-f = open("/home/student/Desktop/Code_github/TextDetection/laatstePlaat.txt", "w+")
+f = open("/home/student/Desktop/Code_github/TextDetection/laatstePlaatHulp.txt", "w+")
 f2 = open("/home/student/Desktop/Code_github/TextDetection/zekerheid.txt", "w+")
 
 gemiddelde = 0
@@ -181,10 +184,55 @@ for ((startX, startY, endX, endY), text) in results:
 
     #cv2.imshow("Text Detection", output)
     #cv2.waitKey(0)
+f.close()
+
+with open('/home/student/Desktop/Code_github/TextDetection/laatstePlaatHulp.txt', 'r') as myfile:
+  data = myfile.read()
+f.close()
+beginString = ""
+letterString = ""
+numberString = ""
+nummerplaat1 = True
+count = 0
+
+p = re.compile("[-]|[=]")
+for m in p.finditer(data):
+    count = count+1
+if count > 1:
+    beginString = beginString + "1-"
+    nummerplaat1 = False
+    
+if nummerplaat1:
+    p = re.compile("[1][-]")
+    for m in p.finditer(data):
+        count = count+1
+        beginString = beginString + m.group()
+    
+count = 0    
+o = re.compile("[A-Z]{3}[-]")
+for n in o.finditer(data):
+        count = count+1
+        letterString = letterString + n.group()
+        
+if count == 1:
+    beginString = beginString + letterString
+    
+count = 0
+k = re.compile("[0-9]{3}")
+for o in k.finditer(data):
+    print(o.start(), o.group())
+    count = count+1
+    numberString = numberString + o.group()
+if count == 1:
+    beginString = beginString + numberString
+    
+print(beginString)
+f = open("/home/student/Desktop/Code_github/TextDetection/laatstePlaat.txt", "w+")
+f.write(beginString)
+f.close()
 
 if gemiddelde != 0:
     gemiddelde = gemiddelde / total
 
 f2.write(str(gemiddelde))
-f.close()
 f2.close()
