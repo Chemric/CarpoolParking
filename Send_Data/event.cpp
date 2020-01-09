@@ -74,7 +74,7 @@ void Event::checkvoldoendePers()
     int i=0;
 
     for(i=0;i<=2; i++){
-        if (getAantalPersonen() >= 0)
+        if (getAantalPersonen() >= 2)
         {
             genoegPers=true;
             return;
