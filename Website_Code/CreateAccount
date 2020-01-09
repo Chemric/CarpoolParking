@@ -1,0 +1,19 @@
+<!DOCTYPE HTML>
+<html>  
+
+	<body>
+
+		<form action="VoegAccountToe.php" method="get" onsubmit="if(document.getElementById('agree').checked) { return true; } else { alert('Please indicate that you have read and agree to the Terms and Conditions and Privacy Policy'); return false; }">
+
+			StudentenNummer: <input type="number" name="studentenNummer" min=10000000 max=20000000/><br>
+			NummerPlaat: <input type="text" name="nummerPlaat" /><br>
+			Agree: <input type="checkbox" name="agree" value="check" id="agree" /> <p> I have read and agree to & jp is cool <a href="http://jungleboogie.pxl-ea-ict.be/Privacy%20Policy"> to the Terms and Conditions and Privacy Policy</a></p>
+			<input type="submit">
+
+		</form>
+
+
+	</body>
+
+</html>
+
